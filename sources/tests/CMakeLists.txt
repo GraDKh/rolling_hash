@@ -1,5 +1,9 @@
-add_executable(tests
+include_directories(${LIB_INCLUDE_DIR})
+add_executable(rh_tests
     buffered_file_reader_tests.cpp
     main.cpp)
-add_dependencies(tests googletest)
-target_link_libraries(tests gtest pthread)
+add_dependencies(rh_tests googletest)
+target_link_libraries(rh_tests rh_lib gtest pthread)
+
+add_custom_target(run_tests COMMAND "${CMAKE_CURRENT_BINARY_DIR}/rh_tests")
+add_dependencies(run_tests rh_tests)
