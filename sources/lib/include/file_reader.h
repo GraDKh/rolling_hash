@@ -8,7 +8,7 @@ namespace rh {
 
 class FileReader : public DataReader {
 public:
-    FileReader(const std::string& path);
+    FileReader(const std::string& path, bool buffered);
 
     size_t read(char* buffer, size_t max_len) override;
 

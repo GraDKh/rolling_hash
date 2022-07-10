@@ -11,6 +11,11 @@ namespace rh {
 struct ChunkInfo {
     uint64_t offset;
     uint64_t length;
+
+    // NOTE: needed by tests only
+    bool operator==(const ChunkInfo& other) const {
+        return offset == other.offset && length == other.length;
+    }
 };
 
 class Signature {
@@ -30,8 +35,11 @@ public:
         }
     }
 
-    void write_to_file(const std::string& path);
+    void write_to_file(const std::string& path) const;
     static Signature read_from_file(const std::string& path);
+
+    // NOTE: needed by tests only
+    bool operator==(const Signature& other) const;
 
 private:
     std::unordered_map<weak_hash_t, chunks_by_strong_hash_t> _chunks_info;

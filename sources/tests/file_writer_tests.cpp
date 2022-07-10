@@ -11,9 +11,9 @@ namespace ut {
 
 namespace {
 
-TmpFile write_to_file(const std::vector<std::vector<char>>& data) {
+TmpFile write_to_file(const std::vector<std::vector<char>>& data, const bool buffered) {
     const std::string path("tmp.data");
-    FileWriter writer(path);
+    FileWriter writer(path, buffered);
     for (const auto& chunk: data) {
         writer.write({chunk.data(), chunk.size()});
     }
@@ -36,8 +36,8 @@ std::vector<T> merge(const std::vector<std::vector<T>>& vecs) {
     return result;
 }
 
-void check_write_to_file(const std::vector<std::vector<char>>& data) {
-    const auto file = write_to_file(data);
+void check_write_to_file(const std::vector<std::vector<char>>& data, const bool buffered) {
+    const auto file = write_to_file(data, buffered);
     const auto expected = merge(data);
     const auto file_data = file.read_all();
     EXPECT_EQ(file_data, expected);
@@ -45,29 +45,37 @@ void check_write_to_file(const std::vector<std::vector<char>>& data) {
 
 } // namespace
 
-TEST(FileWriterTests, empty_file) {
-    check_write_to_file({});
+class FileWriterTests :public ::testing::TestWithParam<bool> {
+};
 
-    check_write_to_file({{}});
-    check_write_to_file({{}, {}});
+TEST_P(FileWriterTests, empty_file) {
+    check_write_to_file({}, GetParam());
+
+    check_write_to_file({{}}, GetParam());
+    check_write_to_file({{}, {}}, GetParam());
 }
 
-TEST(FileWriterTests, single_write) {
-    check_write_to_file({{'a'}});
-    check_write_to_file({{'a', 'b', 'c'}});
+TEST_P(FileWriterTests, single_write) {
+    check_write_to_file({{'a'}}, GetParam());
+    check_write_to_file({{'a', 'b', 'c'}}, GetParam());
 }
 
-TEST(FileWriterTests, several_writes) {
-    check_write_to_file({{'a'}, {'b'}});
-    check_write_to_file({{'a', 'b', 'c'}, {'d'}});
-    check_write_to_file({{'a', 'b', 'c'}, {'d'}, {'e', 'f'}});
+TEST_P(FileWriterTests, several_writes) {
+    check_write_to_file({{'a'}, {'b'}}, GetParam());
+    check_write_to_file({{'a', 'b', 'c'}, {'d'}}, GetParam());
+    check_write_to_file({{'a', 'b', 'c'}, {'d'}, {'e', 'f'}}, GetParam());
 }
 
-TEST(FileWriterTests, several_writes_with_empty) {
-    check_write_to_file({{}, {'a'}, {'b'}});
-    check_write_to_file({{'a'}, {}, {'b'}});
-    check_write_to_file({{'a'}, {'b'}, {}});
+TEST_P(FileWriterTests, several_writes_with_empty) {
+    check_write_to_file({{}, {'a'}, {'b'}}, GetParam());
+    check_write_to_file({{'a'}, {}, {'b'}}, GetParam());
+    check_write_to_file({{'a'}, {'b'}, {}}, GetParam());
 }
+
+INSTANTIATE_TEST_CASE_P(
+        FileWriterTests,
+        FileWriterTests,
+        ::testing::Values(true, false));
 
 } // namespace ut
 } // namespace rh

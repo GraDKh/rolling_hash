@@ -4,5 +4,6 @@ include_directories(${LIB_INCLUDE_DIR})
 add_library(rh_lib
     src/file_reader.cpp
     src/file_writer.cpp
+    src/signature.cpp
 )
 target_link_libraries(rh_lib hash_lib)

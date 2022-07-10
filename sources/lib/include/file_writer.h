@@ -6,9 +6,9 @@
 
 namespace rh {
 
-class FileWriter: DataWriter {
+class FileWriter: public DataWriter {
 public:
-    FileWriter(const std::string& path);
+    FileWriter(const std::string& path, bool buffered);
 
     void write(std::string_view data) override;
 

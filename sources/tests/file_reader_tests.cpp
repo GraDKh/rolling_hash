@@ -11,8 +11,8 @@ namespace ut {
 
 namespace {
 
-void test_read_from_file(TmpFile& file, const std::vector<size_t>& chunk_sizes) {
-    FileReader reader{file.get_path()};
+void test_read_from_file(TmpFile& file, const std::vector<size_t>& chunk_sizes, const bool buffered) {
+    FileReader reader{file.get_path(), buffered};
     const auto expected_data = file.read_all();
     std::vector<char> read_data;
     std::vector<char> chunk_data;
@@ -30,34 +30,42 @@ void test_read_from_file(TmpFile& file, const std::vector<size_t>& chunk_sizes) 
 
 } // namespace
 
-TEST(FileReaderTests, test_empty_file) {
+class FileReaderTests :public ::testing::TestWithParam<bool> {
+};
+
+TEST_P(FileReaderTests, test_empty_file) {
     TmpFile file(0);
 
-    test_read_from_file(file, {0});
-    test_read_from_file(file, {1});
-    test_read_from_file(file, {2, 1});
+    test_read_from_file(file, {0}, GetParam());
+    test_read_from_file(file, {1}, GetParam());
+    test_read_from_file(file, {2, 1}, GetParam());
 }
 
-TEST(FileReaderTests, test_single_read) {
+TEST_P(FileReaderTests, test_single_read) {
     TmpFile file(4);
 
-    test_read_from_file(file, {4});
-    test_read_from_file(file, {4, 1});
+    test_read_from_file(file, {4}, GetParam());
+    test_read_from_file(file, {4, 1}, GetParam());
 }
 
-TEST(FileReaderTests, test_two_reads) {
+TEST_P(FileReaderTests, test_two_reads) {
     TmpFile file(4);
 
-    test_read_from_file(file, {2, 2});
-    test_read_from_file(file, {2, 2, 1});
+    test_read_from_file(file, {2, 2}, GetParam());
+    test_read_from_file(file, {2, 2, 1}, GetParam());
 }
 
-TEST(FileReaderTests, test_zero_size_reads) {
+TEST_P(FileReaderTests, test_zero_size_reads) {
     TmpFile file(4);
 
-    test_read_from_file(file, {1, 0, 3});
-    test_read_from_file(file, {0, 2, 0, 2, 1});
+    test_read_from_file(file, {1, 0, 3}, GetParam());
+    test_read_from_file(file, {0, 2, 0, 2, 1}, GetParam());
 }
+
+INSTANTIATE_TEST_CASE_P(
+        FileReaderTests,
+        FileReaderTests,
+        ::testing::Values(true, false));
 
 } // namespace ut
 } // namespace rh

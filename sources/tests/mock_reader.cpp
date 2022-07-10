@@ -15,6 +15,7 @@ size_t MockDataReader::read(char* buffer, const size_t max_len) {
 
     const auto bytes_to_read = std::min(max_len, _data.size() - _offset);
     std::memcpy(buffer, _data.data() + _offset, bytes_to_read);
+    _offset += bytes_to_read;
     return bytes_to_read;
 }
 

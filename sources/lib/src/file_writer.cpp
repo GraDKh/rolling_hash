@@ -2,7 +2,10 @@
 
 namespace rh {
 
-FileWriter::FileWriter(const std::string& path) {
+FileWriter::FileWriter(const std::string& path, const bool buffered) {
+    if (!buffered) {
+        _stream.rdbuf()->pubsetbuf(0, 0);
+    }
     _stream.open(path.c_str());
     if (_stream.fail()) {
         throw std::runtime_error("Failed to open file " + path);
