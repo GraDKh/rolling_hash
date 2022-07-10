@@ -8,6 +8,8 @@
 
 namespace rh {
 
+// Builds in-memory delta object.
+// As for now used for testing purposes only.
 class MemoryDeltaBuilder {
 public:
     using block_data = std::variant<ChunkInfo, std::vector<char>>;
