@@ -3,4 +3,5 @@ set(LIB_INCLUDE_DIR ${LIB_INCLUDE_DIR} PARENT_SCOPE)
 include_directories(${LIB_INCLUDE_DIR})
 add_library(rh_lib
     src/file_reader.cpp
+    src/file_writer.cpp
 )

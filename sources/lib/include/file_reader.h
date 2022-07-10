@@ -1,7 +1,6 @@
 #pragma once
 
 #include <fstream>
-#include <vector>
 
 #include "data_reader.h"
 
@@ -11,12 +10,10 @@ class FileReader : public DataReader {
 public:
     FileReader(const std::string& path);
 
-    std::string_view read(size_t len) override;
+    size_t read(char* buffer, size_t max_len) override;
 
 private:
-    std::fstream _stream;
-    size_t _offset = 0;
-    std::vector<char> _buffer;
+    std::ifstream _stream;
 };
 
 } // namespace rh

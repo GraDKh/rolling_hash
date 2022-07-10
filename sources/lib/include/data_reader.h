@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string_view>
+#include <vector>
 
 namespace rh {
 
@@ -8,7 +8,9 @@ class DataReader {
 public:
     virtual ~DataReader() = default;
 
-    virtual std::string_view read(size_t len) = 0;
+    // Reads data to buffer up specified max_len.
+    // Returns the number of bytes being read.
+    virtual size_t read(char* buffer, size_t max_len) = 0;
 };
 
 } // namespace rh

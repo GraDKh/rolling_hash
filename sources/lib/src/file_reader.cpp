@@ -10,20 +10,17 @@ FileReader::FileReader(const std::string& path) {
     }
 }
 
-std::string_view FileReader::read(const size_t len) {
+size_t FileReader::read(char* buffer, size_t max_len) {
     if (_stream.eof()) {
-        return {};
+        return 0;
     }
 
-    _buffer.resize(len);
-    const auto bytes_read = static_cast<size_t>(_stream.read(_buffer.data(), len).gcount());
+    const auto bytes_read = static_cast<size_t>(_stream.read(buffer, max_len).gcount());
     if (!_stream.eof() && _stream.fail()) {
         throw std::runtime_error("Failed to read from file");
     }
-    _offset += bytes_read;
-    _buffer.resize(bytes_read);
 
-    return {_buffer.data(), bytes_read};
+    return bytes_read;
 }
 
 } // namespace rh
