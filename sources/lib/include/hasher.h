@@ -2,6 +2,8 @@
 
 #include <string_view>
 
+#include <sha1.h>
+
 #include "types.h"
 
 namespace rh {
@@ -56,10 +58,35 @@ public:
     }
 };
 
-class SHA256Hasher {
+class SHA1Hasher {
+public:
+    void init(const std::string_view range) {
+        sha1.reset();
+        add(range);
+    }
+
+    void add(const std::string_view range) {
+        sha1.add(range.data(), range.size());
+    }
+
+    weak_hash_t get_value() {
+        unsigned char buffer[SHA1::HashBytes];
+        sha1.getHash(buffer);
+
+        weak_hash_t result;
+        static_assert(std::tuple_size<weak_hash_t>::value * sizeof(std::tuple_element_t<0, weak_hash_t> == sizeof(buffer)));
+    }
+
+private:
+    SHA1 sha1;
+};
+
+class SHA256BlockHasher {
 public:
     strong_hash_t operator()(const std::string_view range) const {
-        return {};
+        SHA1Hasher hasher;
+        hasher.init(range);
+        return hasher.get_value();
     }
 };
 

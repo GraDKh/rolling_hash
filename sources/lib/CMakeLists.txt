@@ -5,3 +5,4 @@ add_library(rh_lib
     src/file_reader.cpp
     src/file_writer.cpp
 )
+target_link_libraries(rh_lib hash_lib)

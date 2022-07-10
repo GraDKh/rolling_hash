@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "file_reader.h"
 

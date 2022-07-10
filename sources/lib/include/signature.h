@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "types.h"
+#include "hash_utils.h"
 
 namespace rh {
 
@@ -13,6 +14,7 @@ struct ChunkInfo {
 };
 
 class Signature {
+public:
     using chunks_by_strong_hash_t = std::unordered_map<strong_hash_t, ChunkInfo>;
 
 public:
