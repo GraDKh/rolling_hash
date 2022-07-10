@@ -23,6 +23,9 @@ public:
     using chunks_by_strong_hash_t = std::unordered_map<strong_hash_t, ChunkInfo>;
 
 public:
+    Signature(uint64_t chunk_size);
+    Signature(Signature&&) = default;
+
     void add_chunk(const weak_hash_t weak_hash, const strong_hash_t strong_hash, const ChunkInfo& chunk) {
         _chunks_info[weak_hash].try_emplace(strong_hash, chunk);
     }
@@ -35,6 +38,10 @@ public:
         }
     }
 
+    uint64_t get_chunk_size() const {
+        return _chunk_size;
+    }
+
     void write_to_file(const std::string& path) const;
     static Signature read_from_file(const std::string& path);
 
@@ -43,6 +50,7 @@ public:
 
 private:
     std::unordered_map<weak_hash_t, chunks_by_strong_hash_t> _chunks_info;
+    uint64_t _chunk_size;
 };
 
 } // namespace rh

@@ -24,7 +24,7 @@ TEST(SignatureTests, add_single) {
     const strong_hash_t strong = {2};
     const ChunkInfo chunk = {3, 4};
 
-    Signature sign;
+    Signature sign{5};
     sign.add_chunk(weak, strong, chunk);
 
     const auto* search_res = sign.get_by_weak_hash(weak);
@@ -42,7 +42,7 @@ TEST(SignatureTests, add_two_chunks) {
     const ChunkInfo chunk_1 = {4, 5};
     const ChunkInfo chunk_2 = {6, 7};
 
-    Signature sign;
+    Signature sign{5};
     sign.add_chunk(weak, strong_1, chunk_1);
     sign.add_chunk(weak, strong_2, chunk_2);
 
@@ -55,7 +55,7 @@ TEST(SignatureTests, add_two_chunks) {
 }
 
 TEST(SignatureTests, empty_serialization_deserialization) {
-    Signature sign;
+    Signature sign{5};
     check_roundtrip(sign);
 }
 
@@ -69,13 +69,12 @@ TEST(SignatureTests, complex_serialization_deserialization) {
     const ChunkInfo chunk_2 = {8, 9};
     const ChunkInfo chunk_3 = {10, 11};
 
-    Signature sign;
+    Signature sign{5};
     sign.add_chunk(weak_1, strong_1, chunk_1);
     sign.add_chunk(weak_2, strong_2, chunk_2);
     sign.add_chunk(weak_2, strong_3, chunk_3);
     check_roundtrip(sign);
 }
-
 
 } // namespace ut
 } // namespace rh

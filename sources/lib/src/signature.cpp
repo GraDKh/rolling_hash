@@ -5,12 +5,15 @@
 
 namespace rh {
 
+Signature::Signature(const uint64_t chunk_size) : _chunk_size(chunk_size) {}
+
 void Signature::write_to_file(const std::string& path) const {
     FileWriter output(path, true);
-    output.write_value(_chunks_info.size());
+    output.write_value<uint64_t>(_chunk_size);
+    output.write_value<uint64_t>(_chunks_info.size());
     for (const auto& [weak_hash, chunks_by_strong]: _chunks_info) {
         output.write_value(weak_hash);
-        output.write_value(chunks_by_strong.size());
+        output.write_value<uint64_t>(chunks_by_strong.size());
         for (const auto& [strong_hash, chunk]: chunks_by_strong) {
             output.write_value(strong_hash);
             output.write_value(chunk.offset);
@@ -20,13 +23,13 @@ void Signature::write_to_file(const std::string& path) const {
 }
 
 Signature Signature::read_from_file(const std::string& path) {
-    Signature result;
     FileReader input(path, true);
-    const auto count = input.read_value<size_t>();
+    Signature result{input.read_value<uint64_t>()};
+    const auto count = input.read_value<uint64_t>();
     result._chunks_info.reserve(count);
     for (size_t i = 0; i < count; ++i) {
         const auto weak_hash = input.read_value<weak_hash_t>();
-        const auto chunks_count = input.read_value<size_t>();
+        const auto chunks_count = input.read_value<uint64_t>();
         chunks_by_strong_hash_t chunks;
         chunks.reserve(chunks_count);
         for (size_t chunk_index = 0 ; chunk_index < chunks_count; ++chunk_index) {
