@@ -9,4 +9,5 @@ add_library(rh_lib
     src/memory_delta_builder.cpp
     src/signature.cpp
 )
+add_dependencies(rh_lib hash_library)
 target_link_libraries(rh_lib hash_lib)
