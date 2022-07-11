@@ -1,6 +1,6 @@
 # Rolling hash
 
-Implementation of rfile olling hash signature and delta calculation by [spec](https://github.com/eqlabs/recruitment-exercises/blob/8e49a7b8cf9c415466876e852fbd862f74105ec6/rolling-hash.md "spec").
+Implementation of rolling hash signature and delta calculation by [spec](https://github.com/eqlabs/recruitment-exercises/blob/8e49a7b8cf9c415466876e852fbd862f74105ec6/rolling-hash.md "spec").
 
 ## Implementation details
 
@@ -25,10 +25,10 @@ Running tests:
 make run_tests
 ```
 
-## Artefacats
+## Artifacts
 
 Following the instructions above should result in having `rh_diff` and `rh_tests` executables in the `build/bin` folder.
 
 `rh_tests` executes project unit tests.
 
-`rh_diff` is a commandline utility for signature amd delta generation from files. Use `rh_diff --help` to see usage details.
+`rh_diff` is a command-line utility for signature amd delta generation from files. Use `rh_diff --help` to see usage details.
