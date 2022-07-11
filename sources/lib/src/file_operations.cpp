@@ -19,7 +19,7 @@ void generate_diff(const std::string& new_file_path, const std::string& signatur
     const std::string& delta_path) {
     const auto signature = Signature::read_from_file(signature_path);
     FileReader new_file(new_file_path, false);
-    FileDeltaBuilder builder(signature_path);
+    FileDeltaBuilder builder(delta_path);
     build_delta(signature, new_file, Adler32Hasher(), SHA1Hasher(), builder);
 }
 

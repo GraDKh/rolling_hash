@@ -15,7 +15,7 @@ public:
     ~FileDeltaBuilder();
 
     void add_existing_chunk(const ChunkInfo& chunk) {
-        close();
+        close_section();
         write_value(std::numeric_limits<uint64_t>::max());
         write_value(chunk);
     }
@@ -28,7 +28,10 @@ public:
         _last_section_length += data.size();
     }
 
-    void close() {
+    void close();
+
+private:
+    void close_section() {
         if (_last_section_length != 0) {
             // go back and write length of the closed section
             _stream.seekp(_last_pos);
@@ -40,7 +43,6 @@ public:
         }
     }
 
-private:
     template <typename T>
     void write_value(const T& val) {
         static_assert(std::is_pod_v<T>, "T should be POD type");

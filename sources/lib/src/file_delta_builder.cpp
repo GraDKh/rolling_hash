@@ -13,4 +13,9 @@ FileDeltaBuilder::~FileDeltaBuilder() {
     close();
 }
 
+void FileDeltaBuilder::close() {
+    close_section();
+    _stream.close();
+}
+
 } // namespace rh
