@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "signature.h"
 #include "data_reader.h"
 
@@ -7,7 +9,7 @@ namespace rh {
 
 template <typename DeltaBuilder, typename RollingHasher, typename StrongHasher>
 void build_delta(const Signature& signature, DataReader& new_file,
-    RollingHasher rolling_hasher, StrongHasher strong_hasher, DeltaBuilder& builder){
+    RollingHasher rolling_hasher, StrongHasher strong_hasher, DeltaBuilder& builder) {
     const auto find_chunk =
         [&](std::string_view part1, std::string_view part2) -> const ChunkInfo* {
             const auto weak_hash = rolling_hasher.get_value();
