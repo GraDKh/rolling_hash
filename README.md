@@ -24,3 +24,11 @@ Running tests:
 ```
 make run_tests
 ```
+
+## Artefacats
+
+Following the instructions above should result in having `rh_diff` and `rh_tests` executables in the `build/bin` folder.
+
+`rh_tests` executes project unit tests.
+
+`rh_diff` is a commandline utility for signature amd delta generation from files. Use `rh_diff --help` to see usage details.

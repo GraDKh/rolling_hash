@@ -8,7 +8,20 @@
 
 namespace rh {
 
-// Writes delta information to the file on the fly
+// Delta builder implementation that writes delta information 
+// to the file on the fly.
+// The current format is pretty simple and straightforward:
+// Each block is of two types:
+// 1. Existing chunk:
+//    uint64  [UINT64_MAX]
+//    uint64  [offset in original]
+//    uint64  [length]
+// 2. New data
+//    uint64  [length in bytes]
+//    byte    [byte 1]
+//    ...
+//    byte    [byte N]
+// This format may be optimized for compactness.
 class FileDeltaBuilder {
 public:
     FileDeltaBuilder(const std::string& path);
@@ -21,6 +34,9 @@ public:
     }
 
     void add_new_data(std::string_view data) {
+        // Current approach is to write new data to the file.
+        // and when section is finished go back and write the length.
+        // That could be less efficient than just adding a new section per every call.
         if (_last_section_length == 0) {
             _last_section_length = _stream.tellp();
         }

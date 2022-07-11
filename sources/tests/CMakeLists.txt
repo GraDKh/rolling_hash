@@ -4,6 +4,8 @@ add_executable(rh_tests
     src/file_reader_tests.cpp
     src/file_writer_tests.cpp
     src/hasher_tests.cpp
+    # Note: we can't use main file from gtest since at the point of generation 
+    # gtest sources aren't downloaded yet.
     src/main.cpp
     src/mock_reader.cpp
     src/signature_creator_tests.cpp

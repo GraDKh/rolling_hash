@@ -27,7 +27,7 @@ std::string get_help_message() {
     message += "Usage: \n";
     message += "    rh_diff signature OLD_FILE SIGNATURE_FILE\n";
     message += "    rh_diff delta SIGNATURE_FILE NEW_FILE DELTA_FILE\n";
-    message += "    rh_diff --help\n";
+    message += "    rh_diff --help";
 
     return message;
 }
@@ -66,7 +66,7 @@ struct command_visitor {
     }
 
     void operator()(const generate_delta_command& command) const {
-        generate_diff(command.new_file_path, command.signature_path, command.delta_path);
+        generate_delta(command.new_file_path, command.signature_path, command.delta_path);
     }
 
     void operator()(const show_help_command& command) const {

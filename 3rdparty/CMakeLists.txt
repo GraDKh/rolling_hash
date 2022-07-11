@@ -6,6 +6,7 @@ file(MAKE_DIRECTORY ${THIRDPARTY_LIB_DIR})
 set(THIRDPARTY_SRC_DIR "${CMAKE_BINARY_DIR}/3rdparty/src")
 file(MAKE_DIRECTORY ${THIRDPARTY_SRC_DIR})
 
+# gtest
 set(GTEST_ROOT "${THIRDPARTY_SRC_DIR}/gtest")
 ExternalProject_Add(googletest
     SOURCE_DIR        "${GTEST_ROOT}"
@@ -15,6 +16,7 @@ ExternalProject_Add(googletest
     INSTALL_COMMAND   bash -c "cp ./lib/* \"${THIRDPARTY_LIB_DIR}\"")
 set(THIRDPARTY_INCLUDE_DIRS  ${THIRDPARTY_INCLUDE_DIRS} "${GTEST_ROOT}/googletest/include")
 
+# hash library
 set(HASH_LIBRARY_ROOT "${THIRDPARTY_SRC_DIR}/hash-library")
 ExternalProject_Add(hash_library
     SOURCE_DIR        "${HASH_LIBRARY_ROOT}"

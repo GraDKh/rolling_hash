@@ -9,6 +9,7 @@
 
 namespace rh {
 
+// Adler-32 rolling hash implementation.
 class Adler32Hasher {
     static constexpr weak_hash_t divisor = 65521;
 public:
@@ -49,6 +50,7 @@ private:
     weak_hash_t chunk_size = 0;
 };
 
+// Stateless Adler32 hasher for continious blocks
 class Adler32BlockHasher {
 public:
     weak_hash_t operator()(const std::string_view range) const {
@@ -84,6 +86,7 @@ private:
     SHA1 sha1;
 };
 
+// Stateless SHA-1 hasher for continious blocks
 class SHA1BlockHasher {
 public:
     strong_hash_t operator()(const std::string_view range) const {
